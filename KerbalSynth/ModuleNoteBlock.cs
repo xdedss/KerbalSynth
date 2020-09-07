@@ -306,7 +306,7 @@ namespace KerbalSynth
             {
                 if (pitchModeIndex == 1 && !PitchConsistency())
                 {
-                    noteIndex = Utils.OctaveToIndex(noteOctaveIndex, noteNameIndex);
+                    noteIndex = Mathf.Clamp(Utils.OctaveToIndex(noteOctaveIndex, noteNameIndex), 0, 87);
                 }
                 SyncFrequency();
             };
