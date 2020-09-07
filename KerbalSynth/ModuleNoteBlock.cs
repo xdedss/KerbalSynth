@@ -39,7 +39,7 @@ namespace KerbalSynth
         [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720833",
             groupName = "noteGroup"),
             UI_Cycle(controlEnabled = true, affectSymCounterparts = UI_Scene.None,
-            stateNames = new string[] { "#autoLOC_33720840", "#autoLOC_33720841", "#autoLOC_33720842", "#autoLOC_33720843", "#autoLOC_33720851" })]
+            stateNames = new string[] { "#autoLOC_33720840", "#autoLOC_33720841", "#autoLOC_33720842", "#autoLOC_33720843", "#autoLOC_33720858" })]
         public int waveformIndex = 3;
 
         [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720851",
@@ -86,9 +86,21 @@ namespace KerbalSynth
             UI_FloatRange(stepIncrement = 0.01f, maxValue = 1f, minValue = 0f, affectSymCounterparts = UI_Scene.None)]
         public float V = 1.0f;
 
-        //length
+        //Attack & Release
 
-        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720852"),
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720860", guiUnits = "%",
+            groupName = "attackReleaseGroup", groupDisplayName = "#autoLOC_33720859"), 
+            UI_MinMaxRange(stepIncrement = 0.001f, affectSymCounterparts = UI_Scene.None, 
+            maxValueX = 1f, maxValueY = 1f, minValueX = 0f, minValueY = 0f)]
+        public Vector2 attackAndRelease = new Vector2(0, 0.05f);
+
+        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720832",
+            groupName = "attackReleaseGroup"),
+            UI_FloatRange(stepIncrement = 0.01f, maxValue = 1f, minValue = 0f, affectSymCounterparts = UI_Scene.None)]
+        public float attackAmplitude = 1f;
+
+        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720852",
+            groupName = "attackReleaseGroup"),
             UI_FloatRange(stepIncrement = 0.01f, maxValue = 10f, minValue = 0f, affectSymCounterparts = UI_Scene.None)]
         public float length = 0.8f;
 
@@ -122,9 +134,8 @@ namespace KerbalSynth
                 }
                 AudioManager.Log("playing " + noteIndex);
                 waveform = (Buzzer.Waveform)waveformIndex;
-                SyncHarmonics();
+                SyncFrequency();
                 CheckDecay();
-                buzzer.Frequency = Utils.NoteToFrequency(noteIndex);
                 buzzer.AmplitudeTarget = amplitude * decay;
                 buzzer.Pan = pan;
                 buzzer.Wave = waveform;
@@ -174,15 +185,20 @@ namespace KerbalSynth
             float t = 0;
             while (t < length)
             {
-                float holdTime = Mathf.Max(0.02f, length * 0.05f);
-                float decreaseTime = length - holdTime;
-                if (t <= holdTime)
+                float attackTime = attackAndRelease.x * length;
+                float releaseTime = attackAndRelease.y * length;
+                if (t <= attackTime)
                 {
-                    amplitude = 1;
+                    if (t == 0) amplitude = 0;
+                    else amplitude = Mathf.Pow(t / attackTime, 2) * attackAmplitude;
+                }
+                else if (t <= releaseTime)
+                {
+                    amplitude = attackAmplitude;
                 }
                 else
                 {
-                    amplitude = Mathf.Pow((length - t) / decreaseTime, 2) * 0.9f;
+                    amplitude = Mathf.Pow((length - t) / (length - releaseTime), 2) * attackAmplitude;
                 }
                 yield return 0;
                 t += TimeWarp.deltaTime;
@@ -251,15 +267,11 @@ namespace KerbalSynth
             };
             Fields["noteIndex"].OnValueModified += o =>
             {
-                if (buzzer != null)
-                {
-                    buzzer.Frequency = Utils.NoteToFrequency(noteIndex);
-                    SyncHarmonics();
-                }
                 if (pitchModeIndex == 0 && !PitchConsistency())
                 {
                     Utils.IndexToOctave(Mathf.RoundToInt(noteIndex), out noteOctaveIndex, out noteNameIndex);
                 }
+                SyncFrequency();
             };
             Fields["amplitude"].OnValueModified += o =>
             {
@@ -296,6 +308,7 @@ namespace KerbalSynth
                 {
                     noteIndex = Utils.OctaveToIndex(noteOctaveIndex, noteNameIndex);
                 }
+                SyncFrequency();
             };
             Fields["noteOctaveIndex"].OnValueModified += genIndex;
             Fields["noteNameIndex"].OnValueModified += genIndex;
@@ -367,6 +380,15 @@ namespace KerbalSynth
                 {
                     SetColor(Color.black);
                 }
+            }
+        }
+
+        private void SyncFrequency()
+        {
+            if (buzzer != null)
+            {
+                buzzer.Frequency = Utils.NoteToFrequency(noteIndex);
+                SyncHarmonics();
             }
         }
 
