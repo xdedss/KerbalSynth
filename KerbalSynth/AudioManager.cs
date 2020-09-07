@@ -78,7 +78,7 @@ namespace KerbalSynth
 
         private void LoadTones()
         {
-            string folder = Path.Combine(Environment.CurrentDirectory, "GameData/KerbalSynth/Harmonics");
+            string folder = Path.Combine(Environment.CurrentDirectory, "GameData/KerbalSynth/Tones");
             if (Directory.Exists(folder))
             {
                 var configFiles = Directory.EnumerateFiles(folder).Where(f => Path.GetExtension(f) == ".cfg");
@@ -91,8 +91,10 @@ namespace KerbalSynth
                         var root = CrappyCfgParser.ParseNode(text, "root");
                         var parsedTones = ParseCfgNode(root);
                         parsedTones.ForEach(tone => tones.Add(tone));
+                        Log(string.Format("Parsed {0} tones in file {1}", parsedTones.Count, Path.GetFileName(f)));
                     }
                 }
+                Log(string.Format("Parsed {0} tones.", tones.Count));
             }
             else
             {

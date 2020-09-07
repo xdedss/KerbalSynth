@@ -69,4 +69,7 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetPath)" "$(SolutionDir)GameData\KerbalSynth\Plugins\KerbalSynth.dll" /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>
