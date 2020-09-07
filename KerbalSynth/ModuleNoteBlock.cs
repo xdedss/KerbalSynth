@@ -235,17 +235,17 @@ namespace KerbalSynth
             var min_distance = range / 2f;
             var cam = Camera.main.transform;
             var d = part.transform.position - cam.position;
-            var sqrDistance = Mathf.Max(d.sqrMagnitude, min_distance * min_distance);
+            var distance = Mathf.Max(d.magnitude, min_distance);
             switch (decayIndex)
             {
                 case 0://None
                     decay = 1;
                     break;
                 case 1://distance
-                    decay = min_distance * min_distance / sqrDistance;
+                    decay = min_distance / distance;
                     break;
                 case 2://atm
-                    decay = min_distance * min_distance / sqrDistance * Mathf.Min(1, (float)part.atmDensity);
+                    decay = min_distance / distance * Mathf.Min(1, (float)part.atmDensity);
                     break;
             }
             pan = Vector3.Dot(cam.right, d.normalized);
