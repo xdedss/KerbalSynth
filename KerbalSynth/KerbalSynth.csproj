@@ -58,6 +58,10 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>E:\LZR\MyGames\KSP copies\plain install\Kerbal Space Program 1.10.1\KSP_x64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\LZR\MyGames\KSP copies\plain install\Kerbal Space Program 1.10.1\KSP_x64_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioManager.cs" />

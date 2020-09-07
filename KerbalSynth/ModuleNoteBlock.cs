@@ -100,9 +100,20 @@ namespace KerbalSynth
         public float attackAmplitude = 1f;
 
         [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0430",
+            minValue = 0, maxValue = 10,
             groupName = "attackReleaseGroup"),
             UI_FloatRange(stepIncrement = 0.01f, maxValue = 10f, minValue = 0f, affectSymCounterparts = UI_Scene.None)]
         public float length = 0.8f;
+
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0440",
+            groupName = "attackReleaseGroup"),
+            UI_Toggle(controlEnabled = true, disabledText = "#LOC_KSynth_0442", enabledText = "#LOC_KSynth_0441")]
+        public bool allowMouse = true;
+
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0450",
+            groupName = "attackReleaseGroup"),
+            UI_Toggle(controlEnabled = true, disabledText = "#LOC_KSynth_0452", enabledText = "#LOC_KSynth_0451")]
+        public bool allowCollision = false;
 
         //misc
 
@@ -110,6 +121,7 @@ namespace KerbalSynth
         public bool isPlaying = false;
 
         private Buzzer.Waveform waveform;
+        private bool mouseWasDown = false;
         private float decay;
         private float pan;
 
@@ -171,6 +183,26 @@ namespace KerbalSynth
         }
 
         [KSPEvent(guiActive = true, guiActiveEditor = false)]
+        public void TriggerAttack()
+        {
+            if (attackReleaseCoroutine != null)
+            {
+                StopCoroutine(attackReleaseCoroutine);
+            }
+            attackReleaseCoroutine = StartCoroutine(TriggerAttackCoroutine());
+        }
+
+        [KSPEvent(guiActive = true, guiActiveEditor = false)]
+        public void TriggerRelease()
+        {
+            if (attackReleaseCoroutine != null)
+            {
+                StopCoroutine(attackReleaseCoroutine);
+            }
+            attackReleaseCoroutine = StartCoroutine(TriggerReleaseCoroutine());
+        }
+
+        [KSPEvent(guiActive = true, guiActiveEditor = false)]
         public void TriggerAttackRelease()
         {
             if (attackReleaseCoroutine != null)
@@ -206,6 +238,40 @@ namespace KerbalSynth
             amplitude = 0;
         }
 
+        private IEnumerator TriggerAttackCoroutine()
+        {
+            float t = 0;
+            float attackTime = attackAndRelease.x * length;
+            while (t < attackTime)
+            {
+                if (t == 0)
+                {
+                    amplitude = 0;
+                }
+                else
+                {
+                    amplitude = Mathf.Pow(t / attackTime, 2) * attackAmplitude;
+                }
+                yield return 0;
+                t += TimeWarp.deltaTime;
+            }
+            amplitude = attackAmplitude;
+        }
+
+        private IEnumerator TriggerReleaseCoroutine()
+        {
+            float t = 0;
+            float releaseTime = attackAndRelease.y * length;
+            t = releaseTime;
+            while (t < length)
+            {
+                amplitude = Mathf.Pow((length - t) / (length - releaseTime), 2) * attackAmplitude;
+                yield return 0;
+                t += TimeWarp.deltaTime;
+            }
+            amplitude = 0;
+        }
+
         [KSPAction("PlayToggle")]
         public void ActionPlayToggle(KSPActionParam param)
         {
@@ -228,6 +294,18 @@ namespace KerbalSynth
         public void ActionTriggerAttackRelease(KSPActionParam param)
         {
             TriggerAttackRelease();
+        }
+
+        [KSPAction("TriggerAttack")]
+        public void ActionTriggerAttack(KSPActionParam param)
+        {
+            TriggerAttack();
+        }
+
+        [KSPAction("TriggerRelease")]
+        public void ActionTriggerRelease(KSPActionParam param)
+        {
+            TriggerRelease();
         }
 
         public void CheckDecay()
@@ -381,6 +459,38 @@ namespace KerbalSynth
                     SetColor(Color.black);
                 }
             }
+
+            var mouseIsDown = Mouse.Left.GetButton() && Mouse.HoveredPart == this.part;
+            if (mouseIsDown && !mouseWasDown)
+            { // Enter
+                if (allowMouse && HighLogic.LoadedSceneIsFlight)
+                {
+                    PlayStart();
+                    TriggerAttack();
+                }
+            }
+            if (mouseWasDown && !mouseIsDown)
+            { // Leave
+                if (allowMouse && HighLogic.LoadedSceneIsFlight)
+                {
+                    TriggerRelease();
+                }
+            }
+            mouseWasDown = mouseIsDown;
+        }
+
+        public void OnCollisionEnter(Collision collision)
+        {
+            if (allowCollision)
+            {
+                PlayStart();
+                TriggerAttackRelease();
+            }
+        }
+
+        public void OnDestroy()
+        {
+            PlayStop();
         }
 
         private void SyncFrequency()
