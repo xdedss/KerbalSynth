@@ -12,94 +12,94 @@ namespace KerbalSynth
 
         // Note Settings
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Pitch Mode",
-            groupName = "noteGroup", groupDisplayName = "#autoLOC_33720854"),
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0110",
+            groupName = "noteGroup", groupDisplayName = "#LOC_KSynth_0100"),
             UI_Cycle(controlEnabled = true, affectSymCounterparts = UI_Scene.None,
-            stateNames = new string[] { "Advanced", "Simple" })]
+            stateNames = new string[] { "#LOC_KSynth_0111", "#LOC_KSynth_0112" })]
         public int pitchModeIndex = 1;
 
-        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720831", 
+        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0120", 
             minValue = 0, maxValue = 87,
             groupName = "noteGroup"),
             UI_FloatRange(stepIncrement = 0.1f, maxValue = 87f, minValue = 0f, affectSymCounterparts = UI_Scene.None)]
         public float noteIndex = 39;
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720855",
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0130",
             groupName = "noteGroup"),
             UI_ChooseOption(controlEnabled = true, affectSymCounterparts = UI_Scene.None, 
             options = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8" })]
         public int noteOctaveIndex = 4;
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720856",
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0140",
             groupName = "noteGroup"),
             UI_ChooseOption(controlEnabled = true, affectSymCounterparts = UI_Scene.None,
             options = new string[] { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" })]
         public int noteNameIndex = 0;
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720833",
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0150",
             groupName = "noteGroup"),
             UI_Cycle(controlEnabled = true, affectSymCounterparts = UI_Scene.None,
-            stateNames = new string[] { "#autoLOC_33720840", "#autoLOC_33720841", "#autoLOC_33720842", "#autoLOC_33720843", "#autoLOC_33720858" })]
+            stateNames = new string[] { "#LOC_KSynth_0151", "#LOC_KSynth_0152", "#LOC_KSynth_0153", "#LOC_KSynth_0154", "#LOC_KSynth_0155" })]
         public int waveformIndex = 3;
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720851",
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0160",
             groupName = "noteGroup"),
-            UI_ChooseOption(controlEnabled = true, affectSymCounterparts = UI_Scene.None, options = new string[] { "None" })]
+            UI_ChooseOption(controlEnabled = true, affectSymCounterparts = UI_Scene.None, options = new string[] { "#LOC_KSynth_0161" })]
         public int harmonicIndex = 0;
 
         // Amplitude settings
 
-        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720832",
-            groupName = "amplitudeGroup", groupDisplayName = "#autoLOC_33720857"),
+        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0210",
+            groupName = "amplitudeGroup", groupDisplayName = "#LOC_KSynth_0200"),
             UI_FloatRange(stepIncrement = 0.01f, maxValue = 1f, minValue = 0f, affectSymCounterparts = UI_Scene.None)]
         public float amplitude = 0.5f;
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720834",
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0220",
             groupName = "amplitudeGroup"),
             UI_Cycle(controlEnabled = true, affectSymCounterparts = UI_Scene.None,
-            stateNames = new string[] { "#autoLOC_33720844", "#autoLOC_33720845", "#autoLOC_33720846" })]
+            stateNames = new string[] { "#LOC_KSynth_0221", "#LOC_KSynth_0222", "#LOC_KSynth_0223" })]
         public int decayIndex = 2;
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720835",
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0230",
             groupName = "amplitudeGroup"),
             UI_FloatRange(stepIncrement = 0.1f, maxValue = 100f, minValue = 1f, affectSymCounterparts = UI_Scene.None)]
         public float range = 10f;
 
         //Color
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720836",
-            groupName = "colorGroup", groupDisplayName = "#autoLOC_33720853"),
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0310",
+            groupName = "colorGroup", groupDisplayName = "#LOC_KSynth_0300"),
             UI_Cycle(controlEnabled = true, affectSymCounterparts = UI_Scene.None,
-            stateNames = new string[] { "#autoLOC_33720847", "#autoLOC_33720848", "#autoLOC_33720849", "#autoLOC_33720850" })]
+            stateNames = new string[] { "#LOC_KSynth_0311", "#LOC_KSynth_0312", "#LOC_KSynth_0313", "#LOC_KSynth_0314" })]
         public int colorMode = 0;
 
-        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720837",
+        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0320",
             groupName = "colorGroup"),
             UI_FloatRange(stepIncrement = 0.01f, maxValue = 1f, minValue = 0f, affectSymCounterparts = UI_Scene.None)]
         public float H = 0.3f;
-        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720838",
+        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0330",
             groupName = "colorGroup"),
             UI_FloatRange(stepIncrement = 0.01f, maxValue = 1f, minValue = 0f, affectSymCounterparts = UI_Scene.None)]
         public float S = 1.0f;
-        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720839",
+        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0340",
             groupName = "colorGroup"),
             UI_FloatRange(stepIncrement = 0.01f, maxValue = 1f, minValue = 0f, affectSymCounterparts = UI_Scene.None)]
         public float V = 1.0f;
 
         //Attack & Release
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720860", guiUnits = "%",
-            groupName = "attackReleaseGroup", groupDisplayName = "#autoLOC_33720859"), 
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0410", guiUnits = "%",
+            groupName = "attackReleaseGroup", groupDisplayName = "#LOC_KSynth_0400"), 
             UI_MinMaxRange(stepIncrement = 0.001f, affectSymCounterparts = UI_Scene.None, 
             maxValueX = 1f, maxValueY = 1f, minValueX = 0f, minValueY = 0f)]
         public Vector2 attackAndRelease = new Vector2(0, 0.05f);
 
-        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720832",
+        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0420",
             groupName = "attackReleaseGroup"),
             UI_FloatRange(stepIncrement = 0.01f, maxValue = 1f, minValue = 0f, affectSymCounterparts = UI_Scene.None)]
         public float attackAmplitude = 1f;
 
-        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#autoLOC_33720852",
+        [KSPAxisField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0430",
             groupName = "attackReleaseGroup"),
             UI_FloatRange(stepIncrement = 0.01f, maxValue = 10f, minValue = 0f, affectSymCounterparts = UI_Scene.None)]
         public float length = 0.8f;
