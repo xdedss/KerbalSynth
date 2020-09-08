@@ -88,7 +88,7 @@ namespace KerbalSynth
 
         //Attack & Release
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0410", guiUnits = "%",
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "#LOC_KSynth_0410",
             groupName = "attackReleaseGroup", groupDisplayName = "#LOC_KSynth_0400"), 
             UI_MinMaxRange(stepIncrement = 0.001f, affectSymCounterparts = UI_Scene.None, 
             maxValueX = 1f, maxValueY = 1f, minValueX = 0f, minValueY = 0f)]
